@@ -146,3 +146,7 @@ tokens.ini
 # bin
 bin/*
 !bin/.gitkeep
+
+# Output
+out/*
+!out/.gitkeep
