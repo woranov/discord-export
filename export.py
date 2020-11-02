@@ -5,7 +5,7 @@ import pathlib
 import subprocess
 import sys
 from os import PathLike
-from typing import Any, List, NamedTuple, Optional, Union
+from typing import Any, AnyStr, List, MutableSequence, NamedTuple, Optional
 
 DEFAULT_GLOBAL_CONFIG = pathlib.Path("./config.ini")
 DEFAULT_TOKENS_CONFIG = pathlib.Path("./tokens.ini")
@@ -16,7 +16,7 @@ DEFAULT_EXECUTABLE = (
 )
 
 
-ArgsList = List[Union[PathLike, str]]
+ArgsT = MutableSequence[AnyStr]
 
 
 class Guild(NamedTuple):
@@ -66,8 +66,8 @@ class Export(NamedTuple):
             f".{self.output_format}"
         )
 
-    def args(self, out_dir: PathLike) -> ArgsList:
-        out: ArgsList = [
+    def args(self, out_dir: PathLike) -> ArgsT:
+        out: ArgsT = [
             "-c",
             str(self.channel.id),
             "-o",
@@ -136,7 +136,7 @@ def run_export(
 ) -> int:
     token = Token.from_config(tokens, token_name=export.token_name)
 
-    args: ArgsList = [
+    args: ArgsT = [
         executable,
         "export",
         *export.args(out_dir=out_dir),
