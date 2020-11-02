@@ -130,8 +130,8 @@ def run_export(
     export: Export,
     config: configparser.ConfigParser,
     tokens: configparser.ConfigParser,
-    executable: PathLike,
-    out_dir: PathLike,
+    executable: PathLike = DEFAULT_EXECUTABLE,
+    out_dir: PathLike = DEFAULT_OUT_DIR,
     config_filename: Optional[PathLike] = None,
 ) -> int:
     token = Token.from_config(tokens, token_name=export.token_name)
