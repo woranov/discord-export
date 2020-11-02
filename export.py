@@ -57,14 +57,19 @@ class Export(NamedTuple):
 
     @property
     def filename(self) -> str:
-        ts = self.after or datetime.datetime.utcnow()
-        return (
-            f"{self.guild.name}-"
-            f"{self.channel.name}-"
-            f"{self.channel.id}-"
-            f"{int(ts.timestamp())}"
-            f".{self.output_format}"
+        time = self.after or datetime.datetime.utcnow()
+        timestamp = str(int(time.timestamp()))
+
+        name = "-".join(
+            [
+                self.guild.name,
+                self.channel.name,
+                str(self.channel.id),
+                timestamp,
+            ]
         )
+
+        return f"{name}.{self.output_format}"
 
     def args(self, out_dir: PathLike) -> ArgsT:
         out: ArgsT = [
