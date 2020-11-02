@@ -148,6 +148,12 @@ def run_export(
         *token.args(),
     ]
 
+    print(
+        f"exporting {export.guild.name}/{export.channel.name}#{export.channel.id}...",
+        end=" ",
+        flush=True,
+    )
+
     try:
         subprocess.check_output(args, stderr=subprocess.PIPE)
     except subprocess.CalledProcessError as exc:
@@ -157,6 +163,11 @@ def run_export(
             print("skipping, no new messages")
         else:
             raise
+    except KeyboardInterrupt:
+        print("stopping")
+        return 0
+    else:
+        print("done")
 
     config.set(
         f"{export.guild.id}.{export.channel.id}",
@@ -201,10 +212,6 @@ def run_all(
             channel_sections.append(section)
 
     for channel_section in channel_sections:
-        print(
-            f"exporting channel {channel_section} - {config.get(channel_section, 'name')}"
-        )
-
         channel_export = Export.from_config(config, channel_section=channel_section)
 
         run_export(
