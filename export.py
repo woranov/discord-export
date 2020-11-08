@@ -5,7 +5,7 @@ import pathlib
 import subprocess
 import sys
 from os import PathLike
-from typing import Any, AnyStr, List, MutableSequence, NamedTuple, Optional
+from typing import Any, AnyStr, MutableSequence, NamedTuple, Optional
 
 DEFAULT_GLOBAL_CONFIG = pathlib.Path("./config.ini")
 DEFAULT_TOKENS_CONFIG = pathlib.Path("./tokens.ini")
@@ -33,7 +33,7 @@ class Token(NamedTuple):
     token: str
     bot: bool
 
-    def args(self) -> List[str]:
+    def args(self) -> ArgsT:
         return ["-t", self.token] + (["-b"] if self.bot else [])
 
     @classmethod
