@@ -1,9 +1,9 @@
 import argparse
 import configparser
 import datetime
+import locale
 import pathlib
 import subprocess
-import sys
 from os import PathLike
 from typing import Any, AnyStr, MutableSequence, NamedTuple, Optional
 
@@ -157,9 +157,8 @@ def run_export(
     try:
         subprocess.check_output(args, stderr=subprocess.PIPE)
     except subprocess.CalledProcessError as exc:
-        if "contains no messages for the specified period" in exc.stderr.decode(
-            sys.getfilesystemencoding()
-        ):
+        stderr = exc.stderr.decode(locale.getpreferredencoding(False))
+        if "contains no messages for the specified period" in stderr:
             print("skipping, no new messages")
         else:
             raise
