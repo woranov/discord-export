@@ -69,7 +69,19 @@ class Export(NamedTuple):
             ]
         )
 
-        return f"{name}.{self.output_format}"
+        output_format = self.output_format.lower()
+        if "json" in output_format:
+            ext = "json"
+        elif "csv" in output_format:
+            ext = "csv"
+        elif "html" in output_format:
+            ext = "html"
+        elif "text" in output_format:
+            ext = "txt"
+        else:
+            ext = output_format
+
+        return f"{name}.{ext}"
 
     def args(self, out_dir: PathLike) -> ArgsT:
         out: ArgsT = [
@@ -102,7 +114,10 @@ class Export(NamedTuple):
         guild = Guild(int(guild_id), guild_name)
         channel = Channel(int(channel_id), channel_name)
 
-        key_aliases = {"token": "token_name"}
+        key_aliases = {
+            "token": "token_name",
+            "format": "output_format",
+        }
 
         def alias(key: str) -> str:
             return key_aliases.get(key, key)
